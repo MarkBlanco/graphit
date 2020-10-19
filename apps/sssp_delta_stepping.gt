@@ -38,8 +38,9 @@ func main()
             delete frontier;
         end
         var elapsed_time : float = stopTimer();
-        print "elapsed time for source ";
+        print "For source ";
 				print start_vertex;
+				print "elapsed time";
 				print ": ";
         print elapsed_time;
     end
