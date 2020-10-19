@@ -64,7 +64,7 @@ end
 func main()
     var sources : vector{Vertex}(int) = load_sources(argv[2], 64);
 
-    for trail in 0:1
+    for trail in 0:16
 	    var iter : int = 0;
 			startTimer();
       vertices.apply(reset);

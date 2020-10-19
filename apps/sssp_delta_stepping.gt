@@ -5,6 +5,8 @@ const vertices : vertexset{Vertex} = edges.getVertices();
 const dist : vector{Vertex}(int) = 2147483647; %should be INT_MAX
 const pq: priority_queue{Vertex}(int);
 
+extern func load_sources(filename: string, num_nodes: int) -> sources:vector{Vertex}(int);
+
 func updateEdge(src : Vertex, dst : Vertex, weight : int)
     var new_dist : int = dist[src] + weight;
     pq.updatePriorityMin(dst, dist[dst], new_dist);
@@ -19,10 +21,11 @@ func reset(v: Vertex)
 end
 
 func main()
-    for trail in 0:10
-        vertices.apply(reset);
+    var sources : vector{Vertex}(int) = load_sources(argv[2], 64);
+    for src_idx in 0:64
+        var start_vertex : int = sources[src_idx];;
         startTimer();
-        var start_vertex : int = atoi(argv[2]);
+        vertices.apply(reset);
         dist[start_vertex] = 0;
         % parameter list in order -- priority type: int
         % duplication within bucket : false, duplication across bucket: false, priority vector : dist
@@ -35,7 +38,9 @@ func main()
             delete frontier;
         end
         var elapsed_time : float = stopTimer();
-        print "elapsed time: ";
+        print "elapsed time for source ";
+				print start_vertex;
+				print ": ";
         print elapsed_time;
     end
 end
