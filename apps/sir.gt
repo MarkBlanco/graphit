@@ -1,0 +1,104 @@
+element Vertex end
+element Edge end
+
+const edges : edgeset{Edge}(Vertex,Vertex) = load (argv[1]);
+const vertices : vertexset{Vertex} = edges.getVertices();
+const status : vector{Vertex}(int) = 0;
+%const sources : vector{vertex}(int) = 0;
+
+const p_sick : double = 0.5;
+const p_heal : double = 0.8;
+
+const MAX_ITER : int = 100;
+const total_work : bool = 1;
+const reached : int = 0;
+
+extern func gen_rand_float() -> output:float;
+extern func load_sources(filename: string, num_nodes: int) -> sources:vector{Vertex}(int);
+
+func updateEdge(src : Vertex, dst : Vertex)
+		if(gen_rand_float() <= p_sick)
+      status[dst] = 3;
+    end
+end
+
+func apply_healed(v:Vertex) -> output : bool
+    if(status[v]==1)
+			if(gen_rand_float() <= p_heal)
+				% Set immune
+				status[v] = 2;
+			else
+				total_work = 1;	
+			end
+		elif(status[v]==3)
+			% commit to sickness
+			status[v]=1;
+			total_work = 1;	
+		end
+		output = 1;
+end
+
+%mask of unreached vertices
+func checkSusceptible(v : Vertex) -> output : bool
+    output =  status[v] == 0;
+end
+
+func checkInfected(v : Vertex) -> output : bool
+    output = status[v] == 1;
+end
+
+func reset(v: Vertex)
+    status[v] = 0;
+end
+
+func count_reached(v : Vertex)
+	if(status[v] > 0)
+		status[v]=1;
+	end
+end
+
+
+%func encode_infected(v : Vertex)
+%end
+
+func main()
+    var sources : vector{Vertex}(int) = load_sources(argv[2], 64);
+
+    for trail in 0:1
+	    var iter : int = 0;
+			startTimer();
+      vertices.apply(reset);
+			for src_idx in 0:64
+				%print "adding source";
+				%print sources[src_idx];
+				status[sources[src_idx]] = 1;
+			end
+
+    	while (total_work)
+						total_work=0;
+						#s1# var infected : vertexset{Vertex} = vertices.filter(checkInfected);
+						%var susceptible : vertexset{Vertex} = edges.dstFilter(checkSusceptible);
+						#s1# edges.from(infected).to(checkSusceptible).apply(updateEdge);
+
+						%#s1# edges.srcFilter(checkInfected).dstFilter(checkSusceptible).apply(updateEdge);
+           	% Note: updates total work:
+						#s1# vertices.apply(apply_healed); 
+						iter += 1;
+						if (iter >= MAX_ITER)
+							total_work=0;
+						end
+    	 end
+        var elapsed_time : float = stopTimer();
+      	print "elapsed time: ";
+      	print elapsed_time;
+				vertices.apply(count_reached);
+				print "reached: "; 
+				print status.sum();
+				print "iters: "; 
+				print iter;
+    end
+end
+
+% specify schedules here or use a separate schedule file
+schedule:
+    program->configApplyDirection("s1", "SparsePush")->configApplyParallelization("s1", "dynamic-vertex-parallel");
