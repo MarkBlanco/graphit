@@ -39,3 +39,7 @@ func main()
         print elapsed_time;
     end
 end
+
+schedule:
+program->configApplyPriorityUpdateDelta("s1",8192)->configApplyDirection("s1","SparsePush")->configApplyParallelization("s1","dynamic-vertex-parallel");
+

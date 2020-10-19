@@ -1,0 +1,3 @@
+g++ -std=c++14 -I ../../graphit/src/runtime_lib/ -O3 -fopenmp -DOPENMP sssp.cpp -o sssp_delta.x
+
+python3.5 graphitc.py -f ../../graphit/apps/sssp_delta_stepping.gt -o sssp.cpp
