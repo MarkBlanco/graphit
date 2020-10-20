@@ -14,7 +14,7 @@ for EXEC in ${EXECS}
 do
 	echo ${EXEC}
 	# for symmetric graphs
-	for GRAPH in road #kron urand twitter web
+	for GRAPH in road kron urand twitter web
 	do
 		name=${GRAPH}
 		echo $name
@@ -26,7 +26,9 @@ do
 			${DATADIR}${name}.wsg" 
 		echo $CMD
 		./${EXEC} \
-			"${DATADIR}${name}.wsg" >> ${OUTPUT} 2>&1
+		  "${DATADIR}${name}.wsg" >> ${OUTPUT} 2>&1
+		awk -v lines=1 '/elapsed time/ {for(i=lines;i;--i)getline; t+=$0; num+=1 }\
+		       END  {if (num >0) print "average=", t/num}' ${OUTPUT} >> ${OUTPUT}
 	done
 
 	# For non-symmetric graphs
