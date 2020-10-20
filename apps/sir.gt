@@ -1,6 +1,8 @@
 element Vertex end
 element Edge end
 
+%thought: use srand in an extern function to lower variance in between trials.
+
 const edges : edgeset{Edge}(Vertex,Vertex) = load (argv[1]);
 const vertices : vertexset{Vertex} = edges.getVertices();
 const status : vector{Vertex}(int) = 0;
@@ -18,8 +20,8 @@ extern func load_sources(filename: string, num_nodes: int) -> sources:vector{Ver
 
 func updateEdge(src : Vertex, dst : Vertex)
 		if(gen_rand_float() <= p_sick)
-      status[dst] = 3;
-    end
+		      status[dst] = 3;
+    end		      
 end
 
 func apply_healed(v:Vertex) -> output : bool
@@ -73,6 +75,7 @@ func main()
 				%print sources[src_idx];
 				status[sources[src_idx]] = 1;
 			end
+	total_work = 1;
 
     	while (total_work)
 						total_work=0;
@@ -82,7 +85,8 @@ func main()
 
 						%#s1# edges.srcFilter(checkInfected).dstFilter(checkSusceptible).apply(updateEdge);
            	% Note: updates total work:
-						#s1# vertices.apply(apply_healed); 
+						#s1# vertices.apply(apply_healed);
+
 						iter += 1;
 						if (iter >= MAX_ITER)
 							total_work=0;
