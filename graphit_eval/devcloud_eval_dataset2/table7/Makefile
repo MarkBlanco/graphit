@@ -71,7 +71,7 @@ openmp_only_cpps:
 	$(PCC) $(OPENMP_FLAGS) -o bin/sssp_delta_stepping_with_merge cpps/sssp_delta_stepping_with_merge.cpp
 	$(PCC) $(OPENMP_FLAGS) -o bin/sssp_delta_stepping_no_merge cpps/sssp_delta_stepping_no_merge.cpp
 	$(PCC) $(OPENMP_FLAGS) -o bin/pi cpps/pi.cpp ${GRAPHIT_APP_DIR}/sir_helper_fn.cpp
-	$(PCC) $(OPENMP_FLAGS) -o bin/sir.cpp cpps/sir.cpp ${GRAPHIT_APP_DIR}/sir_helper_fn.cpp
+	$(PCC) $(OPENMP_FLAGS) -o bin/sir cpps/sir.cpp ${GRAPHIT_APP_DIR}/sir_helper_fn.cpp
 
 % : cpps/%.cpp
 	$(PCC) -o bin/$@ $< $(CILK_FLAGS) $(TBB_FLAGS)
