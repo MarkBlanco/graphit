@@ -79,13 +79,13 @@ func main()
 
     	while (total_work)
 						total_work=0;
-						#s1# var infected : vertexset{Vertex} = vertices.filter(checkInfected);
+						var infected : vertexset{Vertex} = vertices.filter(checkInfected);
 						%var susceptible : vertexset{Vertex} = edges.dstFilter(checkSusceptible);
 						#s1# edges.from(infected).to(checkSusceptible).apply(updateEdge);
 
 						%#s1# edges.srcFilter(checkInfected).dstFilter(checkSusceptible).apply(updateEdge);
            	% Note: updates total work:
-						#s1# vertices.apply(apply_healed);
+						vertices.apply(apply_healed);
 
 						iter += 1;
 						if (iter >= MAX_ITER)
@@ -105,4 +105,4 @@ end
 
 % specify schedules here or use a separate schedule file
 schedule:
-    program->configApplyDirection("s1", "SparsePush")->configApplyParallelization("s1", "dynamic-vertex-parallel");
+    program->configApplyDirection("s1", "SparsePush")->configApplyParallelization("s1", "dynamic-vertex-parallel")->setApply("s1", "sliding_queue");

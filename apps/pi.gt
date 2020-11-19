@@ -94,4 +94,4 @@ func main()
 end
 
 schedule:
-    program->configApplyDirection("s1", "DensePull")->configApplyParallelization("s1","static-vertex-parallel");
+    program->configApplyDirection("s1", "DensePull")->configApplyParallelization("s1","dynamic-vertex-parallel");
