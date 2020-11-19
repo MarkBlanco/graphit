@@ -46,6 +46,9 @@ all:
 	make cpps
 
 graphit_files:
+	cp ../../../apps/pi.gt apps/pi.gt
+	cp ../../../apps/sir.gt apps/sir.gt
+	cp ../../../apps/sir_helper_fn.cpp apps/sir_helper_fn.cpp
 
 	python3 ${GRAPHITC_PY} -a ${GRAPHIT_APP_DIR}/sssp.gt -f ${GRAPHIT_SCHEDULE_DIR}/sssp_hybrid_denseforward_parallel_cas.gt -o cpps/sssp_hybrid_denseforward.cpp
 	python3 ${GRAPHITC_PY} -a ${GRAPHIT_APP_DIR}/sssp.gt -f ${GRAPHIT_SCHEDULE_DIR}/sssp_push_parallel_sliding_queue.gt -o cpps/sssp_push_slq.cpp
@@ -56,8 +59,8 @@ graphit_files:
 	python3 ${GRAPHITC_PY} -a ${GRAPHIT_APP_DIR}/pagerank.gt -f ${GRAPHIT_SCHEDULE_DIR}/pagerank_benchmark_pull_parallel.gt -o cpps/pagerank_pull.cpp
 	python3 ${GRAPHITC_PY} -a ${GRAPHIT_APP_DIR}/pagerank.gt -f ${GRAPHIT_SCHEDULE_DIR}/pagerank_benchmark_cache.gt -o cpps/pagerank_pull_segment.cpp
 
-	python3 ${GRAPHITC_PY} -f ${GRAPHIT_APP_DIR}/pi.gt -o cpps/pi.cpp
-	python3 ${GRAPHITC_PY} -f ${GRAPHIT_APP_DIR}/sir.gt -o cpps/sir.cpp
+	python3 ${GRAPHITC_PY} -f ${GRAPHIT_APP_DIR}/pi.gt  -o cpps/pi.cpp
+	python3 ${GRAPHITC_PY} -f ${GRAPHIT_APP_DIR}/sir.gt  -o cpps/sir.cpp
 
 cpps: openmp_only_cpps 
 	# $(sssp_cilk_cpps) $(pr_cilk_cpps)
