@@ -121,7 +121,7 @@ def get_cmd_graphit(g, p, point):
 
     if p == "pi" or p=="sir":
       SOURCES_PATH = DATA_PATH + "sources/"
-      cat_command = " < cat " + SOURCES_PATH + g + ".sources"
+      cat_command = " < " + SOURCES_PATH + g + ".sources"
     else:
       cat_command = ""
 
