@@ -62,7 +62,7 @@ graphit_files:
 	python3 ${GRAPHITC_PY} -f ${GRAPHIT_APP_DIR}/pi.gt  -o cpps/pi.cpp
 	python3 ${GRAPHITC_PY} -f ${GRAPHIT_APP_DIR}/sir.gt  -o cpps/sir.cpp
 
-cpps: openmp_only_cpps 
+cpps: openmp_only_cpps $(pr_cilk_cpps) $(sssp_cilk_cpps)
 	# $(sssp_cilk_cpps) $(pr_cilk_cpps)
 
 # this two cpps files can only be compiled with openmp to get parallel performance

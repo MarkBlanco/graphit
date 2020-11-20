@@ -10,7 +10,7 @@ from threading import Timer
 use_NUMACTL = False
 
 framework_app_lookup = {
-    "graphit": {"pi" : "pi", "sir":"sir", "pr": "pr", "sssp": "sssp", "bfs": "bfs", "cc": "cc", "bc":"bc", "tc":"tc", "ds": "sssp_delta_stepping", "ds_lazy" : "sssp_delta_stepping_lazy"},
+    "graphit": {"pi":"pi", "sir":"sir", "pr": "pr", "sssp": "sssp", "bfs": "bfs", "cc": "cc", "bc":"bc", "tc":"tc", "ds": "sssp_delta_stepping", "ds_lazy" : "sssp_delta_stepping_lazy"},
 }
 
 # TODO these numbers might not be optimal
@@ -22,24 +22,35 @@ framework_app_graph_runtime_param_map = {
 
 #TODO kron and urand have to be tuned. Right now they are just placeholders
 graphit_binary_map = {
-                      "twitter" : {"pr":"pagerank_pull_segment",
+                      "twitter" : {
+                                   "pi":"pi",
+                                   "sir":"sir",
+                                   "pr":"pagerank_pull_segment",
                                    "sssp" : "sssp_hybrid_denseforward",
                                    "sssp_delta_stepping" : "sssp_delta_stepping_with_merge",
                                    "sssp_delta_stepping_lazy" : "sssp_delta_stepping_lazy"}, 
                       "web" : {"pr":"pagerank_pull",
+                                   "pi":"pi",
+                                   "sir":"sir",
                                     "sssp" : "sssp_hybrid_denseforward",
                                     "sssp_delta_stepping" : "sssp_delta_stepping_with_merge",
                                     "sssp_delta_stepping_lazy" : "sssp_delta_stepping_lazy"},
                         "kron" : {"pr":"pagerank_pull_segment",
+                                   "pi":"pi",
+                                   "sir":"sir",
                                   "sssp" : "sssp_hybrid_denseforward",
                                   "sssp_delta_stepping" : "sssp_delta_stepping_with_merge",
                                   "sssp_delta_stepping_lazy" : "sssp_delta_stepping_lazy"},
                         "urand" : {"pr":"pagerank_pull_segment",
+                                   "pi":"pi",
+                                   "sir":"sir",
                                   "sssp" : "sssp_hybrid_denseforward",
                                   "sssp_delta_stepping" : "sssp_delta_stepping_with_merge",
                                   "sssp_delta_stepping_lazy" : "sssp_delta_stepping_lazy"},
 
                         "road" : {"pr":"pagerank_pull",
+                                   "pi":"pi",
+                                   "sir":"sir",
                                   "sssp" : "sssp_push_slq",
                                   "sssp_delta_stepping" : "sssp_delta_stepping_with_merge",
                                   "sssp_delta_stepping_lazy" : "sssp_delta_stepping_lazy"},
@@ -119,9 +130,9 @@ def get_cmd_graphit(g, p, point):
     else:
         graph_path = DATA_PATH + g + ".sg"
 
-    if p == "pi" or p=="sir":
+    if p=="sir":
       SOURCES_PATH = DATA_PATH + "sources/"
-      cat_command = " < " + SOURCES_PATH + g + ".sources"
+      cat_command = " " + SOURCES_PATH + g + ".sources "
     else:
       cat_command = ""
 
@@ -203,7 +214,6 @@ def main():
                   if not cmd:
                     break
                   print(cmd)
-                  continue # TODO: remove
                   # setup timeout for executions that hang
                   kill = lambda process: process.kill()
                   out = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
