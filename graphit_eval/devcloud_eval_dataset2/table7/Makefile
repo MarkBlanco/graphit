@@ -6,6 +6,7 @@ GRAPHITC_PY = ../../../build/bin/graphitc.py
 GRAPHIT_APP_DIR = ./apps
 GRAPHIT_SCHEDULE_DIR= ./schedules
 
+GCC_PAR=1
 ifdef GCC_PAR
 # compiling with gcc CILK and OPENMP
 PCC = g++
@@ -62,7 +63,7 @@ graphit_files:
 	python3 ${GRAPHITC_PY} -f ${GRAPHIT_APP_DIR}/pi.gt  -o cpps/pi.cpp
 	python3 ${GRAPHITC_PY} -f ${GRAPHIT_APP_DIR}/sir.gt  -o cpps/sir.cpp
 
-cpps: openmp_only_cpps $(pr_cilk_cpps) $(sssp_cilk_cpps)
+cpps: openmp_only_cpps 
 	# $(sssp_cilk_cpps) $(pr_cilk_cpps)
 
 # this two cpps files can only be compiled with openmp to get parallel performance
@@ -72,6 +73,8 @@ openmp_only_cpps:
 	$(PCC) $(OPENMP_FLAGS) -o bin/sssp_delta_stepping_no_merge cpps/sssp_delta_stepping_no_merge.cpp
 	$(PCC) $(OPENMP_FLAGS) -o bin/pi cpps/pi.cpp ${GRAPHIT_APP_DIR}/sir_helper_fn.cpp
 	$(PCC) $(OPENMP_FLAGS) -o bin/sir cpps/sir.cpp ${GRAPHIT_APP_DIR}/sir_helper_fn.cpp
+	$(PCC) $(OPENMP_FLAGS) -o bin/pagerank_pull cpps/pagerank_pull.cpp 
+	$(PCC) $(OPENMP_FLAGS) -o bin/pagerank_pull_segment cpps/pagerank_pull_segment.cpp 
 
 % : cpps/%.cpp
 	$(PCC) -o bin/$@ $< $(CILK_FLAGS) $(TBB_FLAGS)
